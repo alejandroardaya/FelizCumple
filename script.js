@@ -2,7 +2,6 @@ const tapa = document.querySelector('.tapa');
 const mensaje = document.getElementById('mensaje');
 const boton = document.getElementById('play');
 
-// Crear el contexto de audio global
 const context = new (window.AudioContext || window.webkitAudioContext)();
 
 boton.addEventListener('click', () => {
@@ -19,26 +18,27 @@ boton.addEventListener('click', () => {
   boton.disabled = true;
 });
 
-// Mapeo de notas a frecuencias (afinación estándar A4 = 440 Hz)
+// Mapeo de notas musicales a frecuencias (Hz)
 const noteFrequencies = {
   'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88,
-  'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25,
-  'E5': 659.25, 'F5': 698.46, 'F#5': 739.99, 'G5': 783.99,
-  'G#5': 830.61, 'A5': 880.00
+  'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25,
+  'E5': 659.25, 'F#5': 739.99, 'G#5': 830.61,
+  'F#4': 369.99
 };
 
-function playMelody() {
-  const melody = [
-    ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['G#4', 0.6],
-    ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.6],
-    ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.3], ['A4', 0.3], ['B4', 0.3], ['G#4', 0.3],
-    ['E5', 0.3], ['F#5', 0.3], ['G#5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.6],
-    ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['C#5', 0.3], ['A4', 0.6],
-    ['F#4', 0.3], ['F#4', 0.3], ['F#4', 0.3], ['F#4', 0.3],
-    ['G#4', 0.3], ['A4', 0.3], ['B4', 0.3], ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.3], ['E5', 0.3], ['D5', 0.3],
-    ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.6], ['A4', 0.6], ['B4', 1.2]
-  ];
+// Melodía de “La Vie en Rose” — simplificada para trompeta
+const melody = [
+  ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['G#4', 0.6],
+  ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.6],
+  ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.3], ['A4', 0.3], ['B4', 0.3], ['G#4', 0.3],
+  ['E5', 0.3], ['F#5', 0.3], ['G#5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.6],
+  ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['C#5', 0.3], ['A4', 0.6],
+  ['F#4', 0.6], ['F#4', 0.6], ['F#4', 0.6], ['F#4', 0.6],
+  ['G#4', 0.3], ['A4', 0.3], ['B4', 0.3], ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.3], ['E5', 0.3], ['D5', 0.3],
+  ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.6], ['A4', 0.6], ['B4', 1.2]
+];
 
+function playMelody() {
   let time = context.currentTime;
 
   melody.forEach(([note, dur]) => {
@@ -58,6 +58,6 @@ function playMelody() {
     osc.start(time);
     osc.stop(time + dur);
 
-    time += dur + 0.05;
+    time += dur + 0.05; // pequeña pausa entre notas
   });
 }
