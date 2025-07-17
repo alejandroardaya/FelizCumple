@@ -10,7 +10,6 @@ boton.addEventListener('click', () => {
   mensaje.classList.remove('oculto');
   mensaje.classList.add('visible');
 
-  // Reanudar el contexto de audio antes de reproducir
   if (context.state === 'suspended') {
     context.resume().then(playMelody);
   } else {
@@ -20,33 +19,45 @@ boton.addEventListener('click', () => {
   boton.disabled = true;
 });
 
+// Mapeo de notas a frecuencias (afinación estándar A4 = 440 Hz)
+const noteFrequencies = {
+  'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88,
+  'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25,
+  'E5': 659.25, 'F5': 698.46, 'F#5': 739.99, 'G5': 783.99,
+  'G#5': 830.61, 'A5': 880.00
+};
+
 function playMelody() {
-  const notes = [
-    { freq: 264, dur: 0.3 }, { freq: 264, dur: 0.3 }, { freq: 297, dur: 0.6 }, { freq: 264, dur: 0.6 },
-    { freq: 352, dur: 0.6 }, { freq: 330, dur: 1.2 },
-    { freq: 264, dur: 0.3 }, { freq: 264, dur: 0.3 }, { freq: 297, dur: 0.6 }, { freq: 264, dur: 0.6 },
-    { freq: 396, dur: 0.6 }, { freq: 352, dur: 1.2 },
-    { freq: 264, dur: 0.3 }, { freq: 264, dur: 0.3 }, { freq: 528, dur: 0.6 }, { freq: 440, dur: 0.6 },
-    { freq: 352, dur: 0.6 }, { freq: 330, dur: 0.6 }, { freq: 297, dur: 1.2 },
-    { freq: 466, dur: 0.3 }, { freq: 466, dur: 0.3 }, { freq: 440, dur: 0.6 }, { freq: 352, dur: 0.6 },
-    { freq: 396, dur: 0.6 }, { freq: 352, dur: 1.2 }
+  const melody = [
+    ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['G#4', 0.6],
+    ['B4', 0.3], ['C#5', 0.3], ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.6],
+    ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.3], ['A4', 0.3], ['B4', 0.3], ['G#4', 0.3],
+    ['E5', 0.3], ['F#5', 0.3], ['G#5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['C#5', 0.6],
+    ['D5', 0.3], ['E5', 0.3], ['F#5', 0.3], ['E5', 0.3], ['D5', 0.3], ['B4', 0.3], ['C#5', 0.3], ['A4', 0.6],
+    ['F#4', 0.3], ['F#4', 0.3], ['F#4', 0.3], ['F#4', 0.3],
+    ['G#4', 0.3], ['A4', 0.3], ['B4', 0.3], ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.3], ['E5', 0.3], ['D5', 0.3],
+    ['C#5', 0.3], ['B4', 0.3], ['G#4', 0.6], ['A4', 0.6], ['B4', 1.2]
   ];
 
   let time = context.currentTime;
-  notes.forEach(note => {
+
+  melody.forEach(([note, dur]) => {
+    const freq = noteFrequencies[note];
+    if (!freq) return;
+
     const osc = context.createOscillator();
     const gain = context.createGain();
+
+    osc.frequency.value = freq;
+    osc.type = 'sine';
 
     osc.connect(gain);
     gain.connect(context.destination);
 
-    osc.frequency.value = note.freq;
-    osc.type = 'sine';
-
     gain.gain.setValueAtTime(0.2, time);
     osc.start(time);
-    osc.stop(time + note.dur);
+    osc.stop(time + dur);
 
-    time += note.dur + 0.05;
+    time += dur + 0.05;
   });
 }
