@@ -1,0 +1,64 @@
+body {
+  background: #fcefdc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cajita {
+  position: relative;
+  width: 320px;
+}
+
+.tapa {
+  position: absolute;
+  top: 0;
+  width: 320px;
+  height: 80px;
+  background: #a0522d;
+  transform-origin: top center;
+  transition: transform 1.2s ease-out;
+  border-radius: 12px 12px 0 0;
+  z-index: 2;
+}
+
+.base {
+  margin-top: 80px;
+  width: 320px;
+  height: 250px;
+  background: #cd853f;
+  border-radius: 0 0 12px 12px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+#mensaje {
+  font-size: 20px;
+  color: #4b2e0c;
+  margin-top: 30px;
+  opacity: 0;
+  transition: opacity 1.2s ease-in;
+}
+
+#mensaje.visible {
+  opacity: 1;
+}
+
+#play {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.oculto {
+  opacity: 0;
+}
